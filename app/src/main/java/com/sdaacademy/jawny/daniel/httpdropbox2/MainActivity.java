@@ -38,14 +38,12 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.email)
     TextView mEmail;
 
-    @BindView(R.id.country)
-    TextView mCountry;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mId.setText("dbid:AAA2pzGeWQFSaru1XugrFWamf8YMWDTO314");
     }
 
     @OnClick(R.id.get_response)
@@ -64,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 response = sentPost();
             } catch (IOException e) {
                 Log.i(DROP_BOX, "Bląd komunikacji dropBox");
+            } catch (JSONException e) {
+                Log.i(DROP_BOX, "Zle id");
             }
             return response;
         }
@@ -82,23 +82,23 @@ public class MainActivity extends AppCompatActivity {
 
         private void displayResponse(String s) throws JSONException {
             JSONObject json = new JSONObject(s);
-//            mId.setText(json.getString("account_id"));
             JSONObject jsonName = new JSONObject(json.getString("name"));
             mFirstName.setText(jsonName.getString("given_name"));
             mLastName.setText(jsonName.getString("surname"));
             mEmail.setText(json.getString("email"));
-            mCountry.setText(json.getString("country"));
         }
 
-        private String sentPost() throws IOException {
+        private String sentPost() throws IOException, JSONException {
             MediaType jsonMediaType = MediaType.parse("application/json; charset=utf-8");
             OkHttpClient client = new OkHttpClient();
-            String url = "https://api.dropboxapi.com/2/users/get_current_account";
-            String json = "null";
+            String url = "https://api.dropboxapi.com/2/users/get_account";
+            JSONObject json = new JSONObject();
+            json.put("account_id", mId.getText().toString());
+            String jsonStr = json.toString();
 
-            RequestBody body = RequestBody.create(jsonMediaType, json);
+            RequestBody body = RequestBody.create(jsonMediaType, jsonStr);
             Request request = new Request.Builder()
-                    .addHeader("Authorization", "Bearer 3TS3KjVdr6AAAAAAAAAAEsa1_XIUjU9uGjQFCeEDejQ_wbmISUFSvuC8uW-rL7Mx")
+                    .addHeader("Authorization", "Bearer 3TS3KjVdr6AAAAAAAAAAE2Lr1QU0h9tZMtJwYpyDaxF_jzFdvrvHjjSz7OGmz9UL")
                     .addHeader("Content-Type", "application/json")
                     .url(url)
                     .post(body)
