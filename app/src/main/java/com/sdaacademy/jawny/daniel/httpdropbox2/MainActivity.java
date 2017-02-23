@@ -86,9 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
         private void displayResponse(String s) throws JSONException {
             JSONObject json = new JSONObject(s);
-            JSONObject jsonName = new JSONObject(json.getString("name"));
-            mFirstName.setText(jsonName.getString("given_name"));
-            mLastName.setText(jsonName.getString("surname"));
+            mFirstName.setText(json.getJSONObject("name").getString("given_name"));
+            mLastName.setText(json.getJSONObject("name").getString("surname"));
             mEmail.setText(json.getString("email"));
         }
 
