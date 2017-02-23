@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        init();
+    }
+
+    private void init() {
         mId.setText("dbid:AAA2pzGeWQFSaru1XugrFWamf8YMWDTO314");
     }
 
