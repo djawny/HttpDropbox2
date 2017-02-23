@@ -50,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.get_response)
     public void getResponse() {
-        new dropBoxCommunicationTask().execute();
+        if (!mId.getText().toString().isEmpty()) {
+            new dropBoxCommunicationTask().execute();
+        }
     }
 
     public class dropBoxCommunicationTask extends AsyncTask<URL, Integer, String> {
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         private void displayResponse(String s) throws JSONException {
             JSONObject json = new JSONObject(s);
-            mId.setText(json.getString("account_id"));
+//            mId.setText(json.getString("account_id"));
             JSONObject jsonName = new JSONObject(json.getString("name"));
             mFirstName.setText(jsonName.getString("given_name"));
             mLastName.setText(jsonName.getString("surname"));
